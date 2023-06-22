@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.dto.util.InventoryDtoUtil;
-import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
+import com.increff.pos.dto.helper.HelperDto;
+import com.increff.pos.model.data.InventoryData;
+import com.increff.pos.model.form.InventoryForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -16,30 +16,38 @@ import java.util.List;
 
 @Service
 public class InventoryDto {
-
     @Autowired
     private ProductService productService;
-
     @Autowired
-    private InventoryService service;
-    public void insert(InventoryForm form) throws ApiException {
+    private InventoryService inventoryService;
 
-        InventoryPojo p = InventoryDtoUtil.convert(form);
-        ProductPojo productPojo = productService.select(p.getId());
-        InventoryDtoUtil.validate(productPojo);
-        service.insert(p);
+    public void insert(InventoryForm form) throws ApiException {
+        ProductPojo productPojo = productService.select(form.getBarcode());
+        InventoryPojo inventoryPojo = HelperDto.convertFormToInventory(form,productPojo.getId());
+        HelperDto.validate(inventoryPojo);
+        inventoryService.insert(inventoryPojo);
+    }
+
+    public void update(int id,InventoryForm form) throws ApiException{
+        ProductPojo productPojo = productService.select(id);
+        InventoryPojo inventoryPojo = HelperDto.convertFormToInventory(form,productPojo.getId());
+        HelperDto.validate(inventoryPojo);
+        inventoryService.update(inventoryPojo);
     }
     public void delete(int id) throws ApiException{
-        service.delete(id);
+        inventoryService.delete(id);
     }
     public InventoryData getProduct(int id) throws ApiException{
-        return InventoryDtoUtil.convert(service.select(id));
+        InventoryPojo p = inventoryService.select(id);
+        ProductPojo productPojo = productService.select(p.getId());
+        return HelperDto.convertFormToInventory(p,productPojo.getBarcode());
     }
-    public List<InventoryData> getAllProducts(){
-        List<InventoryPojo> list = service.selectAll();
+    public List<InventoryData> getAllProducts() throws ApiException {
+        List<InventoryPojo> list = inventoryService.selectAll();
         List<InventoryData> dataList = new ArrayList<InventoryData>();
         for(InventoryPojo p: list){
-            dataList.add(InventoryDtoUtil.convert(p));
+            ProductPojo productPojo = productService.select(p.getId());
+            dataList.add(HelperDto.convertFormToInventory(p,productPojo.getBarcode()));
         }
         return dataList;
     }

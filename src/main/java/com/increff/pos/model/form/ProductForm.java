@@ -1,4 +1,4 @@
-package com.increff.pos.model;
+package com.increff.pos.model.form;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,8 @@ import javax.persistence.Id;
 @Setter
 @Getter
 public class ProductForm {
-    private int brandCategory;
+    private String barcode;
+    private Integer brandCategory;
     private String name;
-    private double mrp;
+    private Double mrp;
  }

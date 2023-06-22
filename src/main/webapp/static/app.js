@@ -20,7 +20,6 @@ $.notify(message,"error");
 
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
-	console.log("REsp  ", response);
 	showError(response.message);
 //	alert(response.message);
 }

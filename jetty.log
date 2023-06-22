@@ -1,0 +1,20 @@
+2023-06-22 11:02:21 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:21 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:02:24 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:24 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:02:24 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:24 ERROR SqlExceptionHelper:142 - Table 'pos.order_item' doesn't exist
+2023-06-22 11:02:31 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:31 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:02:33 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:33 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:02:43 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:43 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:02:46 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:02:46 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-22 11:03:02 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:03:02 ERROR SqlExceptionHelper:142 - Table 'pos.inventory' doesn't exist
+2023-06-22 11:03:03 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:03:03 ERROR SqlExceptionHelper:142 - Table 'pos.product' doesn't exist
+2023-06-22 11:03:04 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-22 11:03:04 ERROR SqlExceptionHelper:142 - Table 'pos.brand' doesn't exist

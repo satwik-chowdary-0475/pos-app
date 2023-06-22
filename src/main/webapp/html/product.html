@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="snippets.html :: name_head"></head>
 <body>
-
+<nav th:replace="snippets.html :: name_site_navbar"></nav>
 <div class="container">
     <h3>Product Page!!</h3>
     <div class="row">
@@ -12,6 +12,13 @@
                     <label for="inputProduct" class="col-sm-2 col-form-label">Product</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="name" id="inputProduct" placeholder="enter product name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="enter barcode" required>
                     </div>
                 </div>
 
@@ -115,6 +122,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="barcode" placeholder="enter barcode">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="inputBrandCategory" class="col-sm-2 col-form-label">Brand Category</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="brandCategory" placeholder="enter brand category">
@@ -127,7 +140,6 @@
                             </div>
                         </div>
                         <input type="hidden" name="id">
-                        <input type="hidden" name="barcode">
                     </form>
                 </div>
                 <div class="modal-footer">

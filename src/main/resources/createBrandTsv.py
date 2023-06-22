@@ -5,4 +5,4 @@ with open('/Users/satwikchowdary/Desktop/pos/src/main/resources/brand.tsv', 'wt'
     tsv_writer.writerow(['brand', 'category'])
     tsv_writer.writerow(['nestle', 'dairy'])
     tsv_writer.writerow(['dabur', 'health'])
-    tsv_writer.writerow(['iphone', 'mobile'])
+    tsv_writer.writerow(['nike', 'shoes'])

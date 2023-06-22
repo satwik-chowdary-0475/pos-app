@@ -1,8 +1,8 @@
 package com.increff.pos.service;
 
-
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.pojo.OrderPojo;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +13,47 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    private OrderDao dao;
+    private OrderDao orderDao;
 
     @Transactional
     public void insert(OrderPojo p){
-        dao.insert(p);
+        orderDao.insert(p);
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public OrderPojo select(int id) throws ApiException {
-        OrderPojo p = dao.select(id);
-        if(p == null){
-            throw new ApiException("Order with given id doesn't exist!!");
+    @Transactional
+    public void update(int id,OrderPojo p) throws ApiException {
+        OrderPojo orderPojo = orderDao.select(id);
+        if(orderPojo == null){
+            throw new ApiException("Cannot update order as order doesn't exist!!");
         }
-        return p;
+        orderPojo.setTime(p.getTime());
+        orderPojo.setStatus(p.getStatus());
+        orderPojo.setCustomerName(p.getCustomerName());
+    }
+
+    @Transactional
+    public OrderPojo select(int id) throws ApiException{
+        OrderPojo orderPojo = orderDao.select(id);
+        if(orderPojo == null){
+            throw new ApiException("Order doesn't exist!!");
+        }
+        return orderPojo;
     }
 
     @Transactional
     public List<OrderPojo> selectAll(){
-        return dao.selectAll();
+        return orderDao.selectAll();
     }
 
+    @Transactional
+    public void delete(int id){
+        orderDao.delete(id);
+    }
+
+    @Transactional
+    public void invoice(int id) throws ApiException{
+        OrderPojo orderPojo = orderDao.select(id);
+        orderPojo.setStatus("INVOICED");
+
+    }
 }

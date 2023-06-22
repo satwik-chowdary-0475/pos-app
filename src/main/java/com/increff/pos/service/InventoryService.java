@@ -2,10 +2,9 @@ package com.increff.pos.service;
 
 
 import com.increff.pos.dao.InventoryDao;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.util.StringUtil;
+import com.increff.pos.pojo.OrderItemPojo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,54 +13,60 @@ import java.util.List;
 
 @Service
 public class InventoryService {
-
     @Autowired
-    private InventoryDao dao;
+    private InventoryDao inventoryDao;
 
-
+    static Logger logger = Logger.getLogger(InventoryService.class);
     @Transactional(rollbackOn = ApiException.class)
     public void insert(InventoryPojo inventoryPojo) throws ApiException {
         int id = inventoryPojo.getId();
         int quantity = inventoryPojo.getQuantity();
-        InventoryPojo productExists = dao.select(id);
+        InventoryPojo productExists = inventoryDao.select(id);
         if(productExists == null){
             InventoryPojo p = new InventoryPojo();
             p.setId(id);
             p.setQuantity(quantity);
-            dao.insert(p);
+            inventoryDao.insert(p);
         }
         else{
             int newQuantity = quantity + productExists.getQuantity();
-            InventoryPojo p = dao.select(id);
-            p.setQuantity(newQuantity);
+            productExists.setQuantity(newQuantity);
         }
     }
 
     @Transactional
     public void delete(int id){
-        dao.delete(id);
+        inventoryDao.delete(id);
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public InventoryPojo select(int id) throws ApiException {
-        InventoryPojo p = dao.select(id);
+        InventoryPojo p = inventoryDao.select(id);
         if(p == null){
-            throw new ApiException("Product doesn't exist in Inventory!!");
+            throw new ApiException("Product with id not present in inventory!!");
         }
         return p;
     }
 
     @Transactional
     public List<InventoryPojo> selectAll(){
-        return dao.selectAll();
+        return inventoryDao.selectAll();
     }
 
     @Transactional
-    public void update(int id,int quantity){
-        InventoryPojo p = dao.select(id);
-        p.setQuantity(quantity);
+    public void update(InventoryPojo inventoryPojo){
+        InventoryPojo p = inventoryDao.select(inventoryPojo.getId());
+        p.setQuantity(inventoryPojo.getQuantity());
     }
 
-
-
+    @Transactional
+    public void reduceInventory(List<OrderItemPojo> orderItemsList){
+        for(OrderItemPojo p : orderItemsList){
+            int requiredQuantity = p.getQuantity();
+            int productId = p.getProductId();
+            InventoryPojo productInventory = inventoryDao.select(productId);
+            int updatedQuantity = productInventory.getQuantity() - requiredQuantity;
+            productInventory.setQuantity(updatedQuantity);
+        }
+    }
 }

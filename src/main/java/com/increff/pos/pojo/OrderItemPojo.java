@@ -13,7 +13,7 @@ import javax.persistence.*;
 )
 public class OrderItemPojo extends AbstractPojo{
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false)
     private Integer orderId;

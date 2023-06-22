@@ -171,7 +171,6 @@ function updateProduct(event){
 	//Set the values to update
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
-    console.log("UPDate json ",json)
 	$.ajax({
 	   url: url,
 	   type: 'PUT',

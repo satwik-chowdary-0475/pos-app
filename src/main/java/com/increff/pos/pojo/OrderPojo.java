@@ -17,6 +17,9 @@ public class OrderPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
-//    @Column(nullable = false)
+    @Column(nullable = false)
+    private String customerName;
+    @Column(nullable = false)
+    private String status;
     private ZonedDateTime time;
 }

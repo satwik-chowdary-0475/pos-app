@@ -15,8 +15,8 @@ import javax.persistence.*;
 )
 public class BrandPojo extends AbstractPojo{
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE)
-    private int id;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Integer id;
     @Column(nullable = false)
     private String brand;
     @Column(nullable = false)

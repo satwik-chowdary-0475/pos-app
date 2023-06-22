@@ -1,34 +1,33 @@
 package com.increff.pos.dao;
 
 import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.service.BrandService;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
 
 @Repository
 public class InventoryDao extends AbstractDao{
-
+    static Logger logger = Logger.getLogger(InventoryDao.class);
     private static String DELETE_BY_ID = "delete from InventoryPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from InventoryPojo p where id=:id";
     private static String SELECT_ALL = "select p from InventoryPojo p";
 
-    @PersistenceContext
-    private EntityManager em;
 
     @Transactional
     public void insert(InventoryPojo p){
-        em.persist(p);
+
+        em().persist(p);
     }
 
     @Transactional
     public int delete(int id){
-        Query query = em.createQuery(DELETE_BY_ID);
+        Query query = em().createQuery(DELETE_BY_ID);
         query.setParameter("id", id);
         return query.executeUpdate();
     }

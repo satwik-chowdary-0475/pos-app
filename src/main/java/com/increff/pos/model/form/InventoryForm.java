@@ -1,4 +1,4 @@
-package com.increff.pos.model;
+package com.increff.pos.model.form;
 
 
 import lombok.Getter;
@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class InventoryForm {
-    private int id;
-    private int quantity;
+    private String barcode;
+    private Integer quantity;
 }

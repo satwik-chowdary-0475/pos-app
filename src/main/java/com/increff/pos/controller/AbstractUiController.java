@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.increff.pos.model.InfoData;
+import com.increff.pos.model.data.InfoData;
 import com.increff.pos.util.SecurityUtil;
 import com.increff.pos.util.UserPrincipal;
 
@@ -28,6 +28,20 @@ public abstract class AbstractUiController {
         ModelAndView mav = new ModelAndView(page);
         mav.addObject("info", info);
         mav.addObject("baseUrl", baseUrl);
+        return mav;
+    }
+
+    protected ModelAndView mav(String page,int id) {
+        // Get current user
+        UserPrincipal principal = SecurityUtil.getPrincipal();
+
+        info.setEmail(principal == null ? "" : principal.getEmail());
+
+        // Set info
+        ModelAndView mav = new ModelAndView(page);
+        mav.addObject("info", info);
+        mav.addObject("baseUrl", baseUrl);
+        mav.addObject("id",id);
         return mav;
     }
 

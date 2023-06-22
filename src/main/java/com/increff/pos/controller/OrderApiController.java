@@ -1,17 +1,17 @@
 package com.increff.pos.controller;
 
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.dto.OrderDto;
+import com.increff.pos.dto.OrderItemDto;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.data.OrderItemData;
+import com.increff.pos.model.form.OrderForm;
+import com.increff.pos.model.form.OrderItemForm;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.OrderItemService;
-import com.increff.pos.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Api
@@ -19,58 +19,68 @@ import java.util.List;
 public class OrderApiController {
 
     @Autowired
-    private OrderItemService orderItemService;
+    private OrderDto orderDto;
+    @Autowired
+    private OrderItemDto orderItemDto;
 
     @ApiOperation(value = "Creates an order")
     @RequestMapping(path = "/api/order",method = RequestMethod.POST)
-    public void add(@RequestBody OrderItemForm form) throws ApiException {
-        OrderItemPojo p = convert(form);
-        orderItemService.insert(p);
+    public void insert(@RequestBody OrderForm form) throws ApiException {
+        orderDto.insert(form);
     }
 
-    @ApiOperation(value = "Get list of all order items")
-    @RequestMapping(path = "/api/order",method = RequestMethod.GET)
-    public List<OrderItemData> getAllOrderItems(){
-        List<OrderItemPojo> list = orderItemService.selectAll();
-        List<OrderItemData> dataList = new ArrayList<OrderItemData>();
-        for(OrderItemPojo p : list){
-            dataList.add(convert(p));
-        }
-        return dataList;
-    }
-
-    @ApiOperation(value = "Get details of an order item")
+    @ApiOperation(value = "Get details of an order")
     @RequestMapping(path = "/api/order/{id}",method = RequestMethod.GET)
-    public OrderItemPojo getOrderItem(@PathVariable int id) throws ApiException {
-        OrderItemPojo p = orderItemService.select(id);
-        return p;
+    public OrderData getOrder(@PathVariable int id) throws ApiException{
+        return orderDto.getOrder(id);
     }
 
-    @ApiOperation(value = "Update details of an order item")
+    @ApiOperation(value = "Get list of all orders")
+    @RequestMapping(path = "/api/order",method = RequestMethod.GET)
+    public List<OrderData> getAllOrders() throws ApiException {
+        return orderDto.getAllOrders();
+    }
+
+    @ApiOperation(value = "Delete an order")
+    @RequestMapping(path = "/api/order/{id}",method = RequestMethod.DELETE)
+    public void delete(@PathVariable int id) throws ApiException{
+        orderDto.delete(id);
+    }
+
+    @ApiOperation(value = "Invoice an order!!")
     @RequestMapping(path = "/api/order/{id}",method = RequestMethod.PUT)
-    public void update(@PathVariable int id,@RequestBody OrderItemForm form){
-        OrderItemPojo p = convert(form);
-        orderItemService.update(p);
+    public void invoiceOrder(@PathVariable int id) throws ApiException{
+        orderDto.invoice(id);
     }
 
-    public static OrderItemData convert(OrderItemPojo p){
-        OrderItemData d = new OrderItemData();
-        d.setId(p.getId());
-        d.setQuantity(p.getQuantity());
-        d.setOrderId(p.getOrderId());
-        d.setProductId(p.getProductId());
-        d.setSellingPrice(p.getSellingPrice());
-        return d;
+
+    @ApiOperation(value = "Add order item to the order")
+    @RequestMapping(path = "/api/order/{orderId}/order-items",method = RequestMethod.POST)
+    public void insertOrderItem(@PathVariable int orderId,@RequestBody OrderItemForm form) throws ApiException{
+        orderItemDto.insert(orderId,form);
     }
 
-    public static OrderItemPojo convert(OrderItemForm form){
-        OrderItemPojo p = new OrderItemPojo();
-        p.setId(form.getId());
-        p.setQuantity(form.getQuantity());
-        p.setOrderId(form.getOrderId());
-        p.setProductId(form.getProductId());
-        p.setSellingPrice(form.getSellingPrice());
-        return p;
+    @ApiOperation(value = "Get all order items of a order")
+    @RequestMapping(path = "/api/order/{orderId}/order-items",method = RequestMethod.GET)
+    public List<OrderItemData> getOrderItems(@PathVariable int orderId) throws ApiException{
+        return orderItemDto.getOrderItems(orderId);
     }
 
+    @ApiOperation(value = "Get an order-item")
+    @RequestMapping(path = "/api/order/{orderId}/order-items/{id}",method = RequestMethod.GET)
+    public OrderItemData getOrderItem(@PathVariable int orderId,@PathVariable int id) throws ApiException{
+        return orderItemDto.getOrderItem(orderId,id);
+    }
+
+    @ApiOperation(value = "Update an order-item")
+    @RequestMapping(path = "/api/order/{orderId}/order-items/{id}",method = RequestMethod.PUT)
+    public void updateOrderItem(@PathVariable int orderId,@PathVariable int id,@RequestBody OrderItemForm form) throws ApiException{
+        orderItemDto.update(orderId,id,form);
+    }
+
+    @ApiOperation(value = "Delete an order-item")
+    @RequestMapping(path = "/api/order/{orderId}/order-items/{id}",method = RequestMethod.DELETE)
+    public void deleteOrderItem(@PathVariable int orderId,@PathVariable int id) throws ApiException{
+        orderItemDto.delete(orderId,id);
+    }
 }

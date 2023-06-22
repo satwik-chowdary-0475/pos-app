@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.dto.util.ProductDtoUtil;
-import com.increff.pos.model.ProductData;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.dto.helper.HelperDto;
+import com.increff.pos.model.data.ProductData;
+import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -16,45 +16,52 @@ import java.util.List;
 
 @Service
 public class ProductDto {
-
     @Autowired
     private BrandService brandService;
-
     @Autowired
     private ProductService productService;
-
     public void insert(ProductForm form) throws ApiException {
-        ProductDtoUtil.formValidate(form);
-        ProductPojo p = ProductDtoUtil.convert(form);
-        ProductDtoUtil.normalise(p);
+        ProductPojo p = HelperDto.convertFormToProduct(form);
+        HelperDto.validate(p);
+        HelperDto.normalise(p);
         BrandPojo brandPojo = brandService.select(p.getBrandCategory());
-        ProductDtoUtil.validateBrand(brandPojo);
+
+        /* TODO: HANDLE SAME BARCODE CASE
+
+        ProductPojo productPojo = productService.select(p.getBarcode());
+        if(productPojo.getBarcode()!=null){
+           throw new ApiException("Product with same barcode exist!!");
+        }
+*/
         productService.insert(p);
     }
 
     public void update(int id,ProductForm form) throws ApiException{
-        ProductDtoUtil.formValidate(form);
-        ProductPojo p = ProductDtoUtil.convert(form);
-        ProductDtoUtil.normalise(p);
-        ProductDtoUtil.validateProduct(p);
+        ProductPojo p = HelperDto.convertFormToProduct(form);
+        HelperDto.validate(p);
+        HelperDto.normalise(p);
         BrandPojo brandPojo = brandService.select(p.getBrandCategory());
-        ProductDtoUtil.validateBrand(brandPojo);
+        ProductPojo productPojo = productService.select(p.getBarcode());
+        if(productPojo.getBarcode()!=null){
+            throw new ApiException("Product with same barcode exists!!");
+        }
         productService.update(id,p);
     }
 
     public ProductData getProduct(int id) throws ApiException{
         ProductPojo p = productService.select(id);
-        ProductDtoUtil.validateProduct(p);
-        return ProductDtoUtil.convert(p);
+        return HelperDto.convertFormToProduct(p);
     }
 
     public List<ProductData> getAllProducts() throws ApiException{
         List<ProductPojo> list = productService.selectAll();
         List<ProductData> dataList = new ArrayList<ProductData>();
         for(ProductPojo p : list){
-            dataList.add(ProductDtoUtil.convert(p));
+            dataList.add(HelperDto.convertFormToProduct(p));
         }
         return dataList;
     }
+
+
 
 }

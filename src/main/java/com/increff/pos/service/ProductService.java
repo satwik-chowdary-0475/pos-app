@@ -1,10 +1,7 @@
 package com.increff.pos.service;
 
 import com.increff.pos.dao.ProductDao;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,21 +11,17 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    static Logger logger = Logger.getLogger(ProductService.class);
     @Autowired
-    private ProductDao dao;
-
-    @Autowired
-    private BrandService brandService;
-
+    private ProductDao productDao;
     @Transactional(rollbackOn = ApiException.class)
     public void insert(ProductPojo p) throws ApiException {
-        dao.insert(p);
+        productDao.insert(p);
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(int id,ProductPojo p){
-        ProductPojo productPojo = dao.select(id);
+        ProductPojo productPojo = productDao.select(id);
+        productPojo.setBarcode(p.getBarcode());
         productPojo.setName(p.getName());
         productPojo.setMrp(p.getMrp());
         productPojo.setBrandCategory(p.getBrandCategory());
@@ -37,11 +30,24 @@ public class ProductService {
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo select(int id) throws ApiException {
-        ProductPojo p = dao.select(id);
+        ProductPojo p = productDao.select(id);
+        if(p == null){
+            throw new ApiException("Product with given id doesn't exist!!");
+        }
         return p;
     }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public ProductPojo select(String barcode) throws ApiException {
+        ProductPojo p = productDao.select(barcode);
+        if(p == null){
+            throw new ApiException("Product with given barcode doesn't exist!!");
+        }
+        return p;
+    }
+
     @Transactional
     public List<ProductPojo> selectAll(){
-        return dao.selectAll();
+        return productDao.selectAll();
     }
 }

@@ -5,7 +5,7 @@
 <head th:replace="snippets.html :: name_head"></head>
 
 <body>
-
+<nav th:replace="snippets.html :: name_site_navbar"></nav>
 
 <div class="container">
     <div class="row">
@@ -16,6 +16,8 @@
                 <!--                <p>This application teaches you Spring concepts and creating awesome web applications</p>-->
                 <a class="btn btn-primary btn-lg" th:href="@{/ui/brand}" role="button">Brand Page</a>
                 <a class="btn btn-primary btn-lg" th:href="@{/ui/product}" role="button">Product Page</a>
+                <a class="btn btn-primary btn-lg" th:href="@{/ui/inventory}" role="button">Inventory Page</a>
+                <a class="btn btn-primary btn-lg" th:href="@{/ui/order}" role="button">Order Page</a>
 <!--                <a class="btn btn-primary btn-lg" th:href="@{/ui/brand}" role="button">Add Inventory!!</a>-->
             </div>
         </div>
