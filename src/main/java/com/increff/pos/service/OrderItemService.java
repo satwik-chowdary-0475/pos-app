@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Log4j
@@ -20,27 +23,24 @@ public class OrderItemService {
     @Autowired
     private InventoryService inventoryService;
 
-    @Transactional
-    public void insert(OrderItemPojo orderItemPojo) throws ApiException {
-        InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
+    @Transactional(rollbackOn = ApiException.class)
+    public void insert(OrderItemPojo orderItemPojo,InventoryPojo inventoryPojo) throws ApiException {
         int requiredQuantity = orderItemPojo.getQuantity();
         int inventoryQuantity = inventoryPojo.getQuantity();
         OrderItemPojo orderExists = orderItemDao.selectByProduct(orderItemPojo.getOrderId(),orderItemPojo.getProductId());
+        if(requiredQuantity>inventoryQuantity) {
+            throw new ApiException("Insufficient inventory for the product!!!");
+        }
         if(orderExists != null){
-            requiredQuantity+=orderExists.getQuantity();
-            if(requiredQuantity>inventoryQuantity){
-                throw new ApiException("Insufficient inventory for the product!!!");
-            }
-
-            orderExists.setQuantity(requiredQuantity);
+            orderExists.setQuantity(requiredQuantity+orderExists.getQuantity());
         }
         else{
             orderItemDao.insert(orderItemPojo);
         }
-
+        inventoryPojo.setQuantity(inventoryQuantity-requiredQuantity);
     }
 
-    @Transactional
+    @Transactional(rollbackOn = ApiException.class)
     public OrderItemPojo select(int orderId,int id) throws ApiException{
         OrderItemPojo orderItemPojo = orderItemDao.select(orderId,id);
         if(orderItemPojo == null){
@@ -54,28 +54,39 @@ public class OrderItemService {
         return orderItemDao.selectAll(orderId);
     }
 
-    @Transactional
-    public void update(int orderId,int id,OrderItemPojo p) throws ApiException{
+    @Transactional(rollbackOn = ApiException.class)
+    public void update(int orderId,int id,OrderItemPojo p,InventoryPojo inventoryPojo) throws ApiException{
         OrderItemPojo orderItemPojo = orderItemDao.select(orderId,id);
         if(orderItemPojo == null){
             throw new ApiException("Cannot update as order item doesn't exist!!");
         }
-        InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
         int requiredQuantity = p.getQuantity();
         int inventoryQuantity = inventoryPojo.getQuantity();
         if(requiredQuantity > inventoryQuantity){
             throw new ApiException("Insufficient inventory for the product!!!");
         }
         orderItemPojo.setQuantity(requiredQuantity);
+        orderItemPojo.setSellingPrice(p.getSellingPrice());
+        inventoryPojo.setQuantity(inventoryQuantity-requiredQuantity);
     }
 
-    @Transactional
-    public void delete(int orderId,int id){
+    @Transactional(rollbackOn = ApiException.class)
+    public void delete (int orderId,int id,InventoryPojo inventoryPojo) throws ApiException{
+        OrderItemPojo orderItemPojo = orderItemDao.select(orderId,id);
+        if(orderItemPojo == null){
+            throw new ApiException("Order item doesn't exist!!");
+        }
+        inventoryPojo.setQuantity(inventoryPojo.getQuantity() + orderItemPojo.getQuantity());
         orderItemDao.delete(orderId,id);
     }
 
     @Transactional
-    public void deleteByOrder(int orderId){
+    public void deleteByOrder(int orderId,Map<InventoryPojo,Integer>inventoryPojoDict){
+        for(Map.Entry<InventoryPojo,Integer> entry : inventoryPojoDict.entrySet()){
+            InventoryPojo inventoryPojo = entry.getKey();
+            int updatedQuantity = inventoryPojo.getQuantity() + entry.getValue();
+            inventoryPojo.setQuantity(updatedQuantity);
+        }
         orderItemDao.delete(orderId);
     }
 

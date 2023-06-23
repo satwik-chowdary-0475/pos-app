@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.pojo.OrderPojo;
+import lombok.extern.log4j.Log4j;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Log4j
 public class OrderService {
 
     @Autowired
@@ -20,7 +22,7 @@ public class OrderService {
         orderDao.insert(p);
     }
 
-    @Transactional
+    @Transactional(rollbackOn = ApiException.class)
     public void update(int id,OrderPojo p) throws ApiException {
         OrderPojo orderPojo = orderDao.select(id);
         if(orderPojo == null){
@@ -31,7 +33,7 @@ public class OrderService {
         orderPojo.setCustomerName(p.getCustomerName());
     }
 
-    @Transactional
+    @Transactional(rollbackOn = ApiException.class)
     public OrderPojo select(int id) throws ApiException{
         OrderPojo orderPojo = orderDao.select(id);
         if(orderPojo == null){
@@ -51,9 +53,8 @@ public class OrderService {
     }
 
     @Transactional
-    public void invoice(int id) throws ApiException{
+    public void invoice(int id){
         OrderPojo orderPojo = orderDao.select(id);
         orderPojo.setStatus("INVOICED");
-
     }
 }

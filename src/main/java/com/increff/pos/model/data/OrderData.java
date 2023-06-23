@@ -11,4 +11,5 @@ import java.time.ZonedDateTime;
 public class OrderData extends OrderForm {
     private Integer id;
     private String status;
+    private ZonedDateTime createdAt;
 }

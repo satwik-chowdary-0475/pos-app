@@ -13,6 +13,9 @@ function addInventory(event){
        },
 	   success: function(response) {
 	   		getInventoryList();
+	   		$('#inventory-form input[name=barcode]').val('');
+	   		$('#inventory-form input[name=quantity]').val('');
+	   		$.notify("Added product in inventory successfully","success");
    },
 	   error:handleAjaxError
 	});
@@ -55,7 +58,7 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="displayEditInventory('+e.id+')">edit</button>'
+		var buttonHtml = '<button class="btn btn-primary" onclick="displayEditInventory('+e.id+')">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'

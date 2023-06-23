@@ -11,6 +11,7 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +21,15 @@ public class ProductDto {
     private BrandService brandService;
     @Autowired
     private ProductService productService;
-    public void insert(ProductForm form) throws ApiException {
-        ProductPojo p = HelperDto.convertFormToProduct(form);
-        HelperDto.validate(p);
-        HelperDto.normalise(p);
-        BrandPojo brandPojo = brandService.select(p.getBrandCategory());
 
+    @Transactional(rollbackOn = ApiException.class)
+    public void insert(ProductForm form) throws ApiException {
+        HelperDto.normalise(form);
+        BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
+        ProductPojo p = HelperDto.convertFormToProduct(form,brandPojo.getId());
+        HelperDto.normalise(p);
+        HelperDto.roundFloat(p);
+        HelperDto.validate(p);
         /* TODO: HANDLE SAME BARCODE CASE
 
         ProductPojo productPojo = productService.select(p.getBarcode());
@@ -36,28 +40,31 @@ public class ProductDto {
         productService.insert(p);
     }
 
+    @Transactional(rollbackOn = ApiException.class)
     public void update(int id,ProductForm form) throws ApiException{
-        ProductPojo p = HelperDto.convertFormToProduct(form);
-        HelperDto.validate(p);
+        HelperDto.normalise(form);
+        BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
+        ProductPojo p = HelperDto.convertFormToProduct(form, brandPojo.getId());
         HelperDto.normalise(p);
-        BrandPojo brandPojo = brandService.select(p.getBrandCategory());
-        ProductPojo productPojo = productService.select(p.getBarcode());
-        if(productPojo.getBarcode()!=null){
-            throw new ApiException("Product with same barcode exists!!");
-        }
+        HelperDto.roundFloat(p);
+        HelperDto.validate(p);
         productService.update(id,p);
     }
 
+    @Transactional(rollbackOn = ApiException.class)
     public ProductData getProduct(int id) throws ApiException{
-        ProductPojo p = productService.select(id);
-        return HelperDto.convertFormToProduct(p);
+        ProductPojo productPojo = productService.select(id);
+        BrandPojo brandPojo = brandService.select(productPojo.getBrandCategory());
+        return HelperDto.convertFormToProduct(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
+    @Transactional(rollbackOn = ApiException.class)
     public List<ProductData> getAllProducts() throws ApiException{
         List<ProductPojo> list = productService.selectAll();
         List<ProductData> dataList = new ArrayList<ProductData>();
         for(ProductPojo p : list){
-            dataList.add(HelperDto.convertFormToProduct(p));
+            BrandPojo brandPojo = brandService.select(p.getBrandCategory());
+            dataList.add(HelperDto.convertFormToProduct(p,brandPojo.getBrand(), brandPojo.getCategory()));
         }
         return dataList;
     }

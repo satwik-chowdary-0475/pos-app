@@ -162,8 +162,12 @@
             <scope>provided</scope>
         </dependency>
 
-
-
+        <!-- FOM for pdf generation -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>1.0</version>
+        </dependency>
 
 
 

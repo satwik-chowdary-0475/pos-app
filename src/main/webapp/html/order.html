@@ -4,11 +4,11 @@
 <body>
 <nav th:replace="snippets.html :: name_site_navbar"></nav>
 <div class="container">
-    <h3>Order Page!!</h3>
+    <h3>Orders</h3>
     <div class="row">
         <div class="col-12">
-            <form class="form-inline" id="order-form">
-                <div class="form-group">
+            <form class="form-inline" style="text-align:justify;" id="order-form">
+                <div class="form-group my-3">
                     <label for="inputCustomerName" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="customerName" id="inputCustomerName" placeholder="enter customer name" required>
@@ -33,7 +33,7 @@
             <table class="table table-striped" id="order-table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">S.No</th>
                     <th scope="col">Customer Name</th>
                     <th scope="col">Order Status</th>
                     <th scope="col">Actions</th>

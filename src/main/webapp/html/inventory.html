@@ -4,26 +4,26 @@
 <body>
 <nav th:replace="snippets.html :: name_site_navbar"></nav>
 <div class="container">
-  <h3>Inventory Page!!</h3>
+  <h3>Inventory</h3>
   <div class="row">
     <div class="col-12">
-      <form class="form-inline" id="inventory-form">
-        <div class="form-group">
+      <form class="form-inline" style="text-align:justify;" id="inventory-form">
+        <div class="form-group my-3">
           <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
           <div class="col-sm-10">
             <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="enter barcode" required>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group my-3">
           <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
           <div class="col-sm-10">
             <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="enter quantity" required>
           </div>
         </div>
 
-        <button type="button" class="btn btn-primary" id="add-inventory">Add Inventory</button>
+        <button type="button" class="btn btn-success" id="add-inventory">Add Inventory</button>
         &nbsp;
-        <button type="button" class="btn btn-primary" id="upload-data">Upload Inventory!!</button>
+        <button type="button" class="btn btn-info" id="upload-data">Upload Inventory!!</button>
       </form>
     </div>
   </div>
@@ -97,10 +97,10 @@
         </div>
         <div class="modal-body">
           <form class="form-inline" id="inventory-edit-form">
-            <div class="form-group">
+            <div class="form-group my-3">
               <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="quantity" placeholder="enter quantity">
+                <input type="number" class="form-control" name="quantity" placeholder="enter quantity">
               </div>
             </div>
             <input type="hidden" name="id">

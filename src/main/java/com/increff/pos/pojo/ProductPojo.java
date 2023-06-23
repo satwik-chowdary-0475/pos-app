@@ -25,5 +25,5 @@ public class ProductPojo extends AbstractPojo{
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private Double mrp;
+    private Float mrp;
 }

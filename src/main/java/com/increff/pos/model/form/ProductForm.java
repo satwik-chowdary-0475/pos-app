@@ -9,7 +9,8 @@ import javax.persistence.Id;
 @Getter
 public class ProductForm {
     private String barcode;
-    private Integer brandCategory;
+    private String brand;
+    private String category;
     private String name;
-    private Double mrp;
+    private Float mrp;
  }

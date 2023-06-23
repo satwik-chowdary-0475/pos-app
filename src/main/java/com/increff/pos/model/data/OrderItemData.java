@@ -7,8 +7,8 @@ import lombok.Setter;
 public class OrderItemData{
     private Integer id;
     private Integer orderId;
-    private Integer productId;
+    private String productName;
     private Integer quantity;
-    private Double sellingPrice;
+    private Float sellingPrice;
     private String barcode;
 }

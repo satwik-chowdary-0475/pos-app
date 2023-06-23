@@ -1,20 +1,36 @@
-2023-06-22 11:02:21 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:21 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:02:24 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:24 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:02:24 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:24 ERROR SqlExceptionHelper:142 - Table 'pos.order_item' doesn't exist
-2023-06-22 11:02:31 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:31 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:02:33 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:33 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:02:43 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:43 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:02:46 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:02:46 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
-2023-06-22 11:03:02 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:03:02 ERROR SqlExceptionHelper:142 - Table 'pos.inventory' doesn't exist
-2023-06-22 11:03:03 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:03:03 ERROR SqlExceptionHelper:142 - Table 'pos.product' doesn't exist
-2023-06-22 11:03:04 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
-2023-06-22 11:03:04 ERROR SqlExceptionHelper:142 - Table 'pos.brand' doesn't exist
+2023-06-23 12:13:35 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:15:35 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:16:55 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:16:59 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:18:18 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:19:06 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:20:39 WARN  OrderDto:56 - ORDER DETAILS  ankurACTIVE
+2023-06-23 12:20:39 WARN  OrderDto:58 - ORDER DTO 58 : CAME HERE!!!
+2023-06-23 12:20:39 WARN  OrderService:58 - AFTER UPDATING INVOICED
+2023-06-23 13:18:19 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:44:17 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:45:27 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:45:39 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:48:26 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:48:30 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:54:10 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:54:26 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:58:30 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:58:34 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:17 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:19 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:20 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:20 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:20 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 13:59:21 WARN  OrderService:59 - AFTER UPDATING INVOICED
+2023-06-23 15:30:35 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-23 15:30:35 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-23 15:30:35 ERROR SqlExceptionHelper:142 - Table 'pos.order_item' doesn't exist
+2023-06-23 15:30:35 ERROR SqlExceptionHelper:142 - Table 'pos.orders' doesn't exist
+2023-06-23 15:30:40 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2023-06-23 15:30:40 ERROR SqlExceptionHelper:142 - Table 'pos.brand' doesn't exist

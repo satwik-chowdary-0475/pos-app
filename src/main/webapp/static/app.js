@@ -21,7 +21,6 @@ $.notify(message,"error");
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
 	showError(response.message);
-//	alert(response.message);
 }
 
 function readFileData(file, callback){

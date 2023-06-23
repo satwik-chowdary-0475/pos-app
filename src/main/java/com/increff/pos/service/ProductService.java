@@ -15,12 +15,20 @@ public class ProductService {
     private ProductDao productDao;
     @Transactional(rollbackOn = ApiException.class)
     public void insert(ProductPojo p) throws ApiException {
+        ProductPojo productPojo = productDao.select(p.getBarcode());
+        if(productPojo != null){
+            throw new ApiException("Product with same barcode exists!!");
+        }
         productDao.insert(p);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id,ProductPojo p){
+    public void update(int id,ProductPojo p) throws ApiException{
         ProductPojo productPojo = productDao.select(id);
+        ProductPojo productPojo1 = productDao.select(p.getBarcode());
+        if(productPojo1!=null && productPojo != productPojo1){
+            throw new ApiException("Product with same barcode exists!!");
+        }
         productPojo.setBarcode(p.getBarcode());
         productPojo.setName(p.getName());
         productPojo.setMrp(p.getMrp());

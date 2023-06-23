@@ -25,6 +25,8 @@ public class BrandService {
     public void update(int id,BrandPojo p) throws ApiException {
         BrandPojo brandPojo = dao.select(id);
         if(brandPojo == null) throw new ApiException("Cannot update as brand item doesn't exist!!");
+        BrandPojo brandPojo1 = dao.select(p.getBrand(),p.getCategory());
+        if(brandPojo1 != null && brandPojo!=brandPojo1) throw new ApiException("brand-category pair already exist!!");
         brandPojo.setBrand(p.getBrand());
         brandPojo.setCategory(p.getCategory());
     }
@@ -35,6 +37,14 @@ public class BrandService {
         if(brandPojo == null) throw new ApiException("brand item doesn't exist!!");
         return brandPojo;
     }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public BrandPojo select(String brand,String category) throws ApiException {
+        BrandPojo brandPojo = dao.select(brand,category);
+        if(brandPojo == null) throw new ApiException("brand item with given name-category doesn't exist!!");
+        return brandPojo;
+    }
+
 
     @Transactional
     public List<BrandPojo> selectAll(){

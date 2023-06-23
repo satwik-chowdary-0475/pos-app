@@ -1,5 +1,6 @@
 var orderId;
 var orderStatus;
+var totalPrice = 0;
 function getOrderId(){
     orderId = $("#order-item").attr("orderId")
 }
@@ -19,7 +20,9 @@ function getOrderItemUrl(){
     return baseUrl + "/api/order/"+orderId+"/order-items";
 }
 
-function getOrderStatus(){
+
+// TODO: FUNCTIONS CALL ASYNC
+function getOrderDetails(){
 
     var url = getOrderUrl();
     $.ajax({
@@ -28,6 +31,7 @@ function getOrderStatus(){
         success: function(data){
             orderStatus = data.status;
             disableButtons(orderStatus);
+            displayOrderDetails(data);
         },
         error: handleAjaxError
     });
@@ -61,6 +65,7 @@ function displayEditOrderItem(id){
 function displayOrderItem(data){
 	$("#orderItem-edit-form input[name=quantity]").val(data.quantity);
 	$("#orderItem-edit-form input[name=barcode]").val(data.barcode);
+	$("#orderItem-edit-form input[name=sellingPrice]").val(data.sellingPrice);
 	$("#orderItem-edit-form input[name=id]").val(data.id);
 	$('#edit-orderItem-modal').modal('toggle');
 }
@@ -80,26 +85,32 @@ function deleteOrderItem(id){
 function displayOrderItemList(data){
     var $tbody = $('#orderItem-table').find('tbody');
     	$tbody.empty();
+    	totalPrice = 0;
     	for(var i in data){
     		var e = data[i];
-    		var status = e.status;
     		var editHtml = '<button class="btn btn-primary" onclick="displayEditOrderItem('+e.id+')"';
     		editHtml+=(orderStatus != 'ACTIVE')?' disabled':'';
     		editHtml+='>edit</button>';
-    		var deleteHtml = '<button class="btn btn-primary" onclick="deleteOrderItem('+e.id+')"';
+    		var deleteHtml = '<button class="btn btn-danger" onclick="deleteOrderItem('+e.id+')"';
     		deleteHtml+=(orderStatus!='ACTIVE')?' disabled':'';
     		deleteHtml+='>delete</button>';
     		var buttonHtml = editHtml + '&nbsp' + deleteHtml;
+    		i = parseFloat(i)+1;
     		var row = '<tr>'
-    		+ '<td>' + e.id + '</td>'
-    		+ '<td>' + e.orderId + '</td>'
-    		+ '<td>' + e.productId + '</td>'
+    		+ '<td>' + i + '</td>'
+    		+ '<td>' + e.productName + '</td>'
     		+ '<td>' + e.quantity + '</td>'
     		+ '<td>' + e.sellingPrice + '</td>'
     		+ '<td>' + buttonHtml + '</td>'
     		+ '</tr>';
             $tbody.append(row);
+            totalPrice+=(parseInt(e.sellingPrice)*parseInt(e.quantity));
     	}
+
+    	var $totalPriceElement = $('#total-price');
+    	$totalPriceElement.empty();
+    	$totalPriceElement.append('<h5 class="fw-bold mb-0">Total : </h5>');
+    	$totalPriceElement.append('<h5 class="fw-bold mb-0">'+totalPrice+'</h5>');
 
 }
 
@@ -117,6 +128,10 @@ function addOrderItem(event){
        },
 	   success: function(response) {
 	   		getOrderItemList();
+	   		$("#orderItem-form input[name=barcode]").val('');
+            $("#orderItem-form input[name=quantity]").val('');
+            $("#orderItem-form input[name=sellingPrice]").val('');
+
    },
 	   error:handleAjaxError
 	});
@@ -150,7 +165,6 @@ function updateOrderItem(event){
 }
 
 function printInvoice(){
-    console.log("Invoice printed!!!");
     if(orderStatus == "ACTIVE"){
         var url = getOrderUrl();
             $.ajax({
@@ -165,6 +179,17 @@ function printInvoice(){
 
 }
 
+function displayOrderDetails(data){
+    var orderTitle = "Order #"+data.id
+    var $title = $("#order-title").find("h3");
+    $title.html(orderTitle);
+    var $details = $("#order-details").find("div");
+    var date = new Date(data.createdAt*1000);
+    var customerName = '<span class="mr-3 pb-2">'+data.customerName+'</span>'
+    var orderTime = '<span class="mr-3 pb-2">'+date.toLocaleDateString()+'</span>'
+    $details.append(customerName);
+    $details.append(orderTime);
+}
 
 function init(){
     $("#add-orderItem").click(addOrderItem);
@@ -173,6 +198,6 @@ function init(){
 }
 
 $(document).ready(getOrderId());
-$(document).ready(getOrderStatus());
+$(document).ready(getOrderDetails());
 $(document).ready(init);
 $(document).ready(getOrderItemList());

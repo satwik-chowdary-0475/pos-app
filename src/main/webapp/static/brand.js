@@ -12,8 +12,11 @@ function addBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-
 	   		getBrandList();
+	   		$("#brand-form input[name=brand]").val('');
+	   		$("#brand-form input[name=category]").val('');
+	   		$.notify("Added brand successfully","success");
+
    },
 	   error:handleAjaxError
 	});
@@ -57,9 +60,11 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="displayEditBrand('+e.id+')">edit</button>'
+
+		var buttonHtml = '<button class="btn btn-primary" onclick="displayEditBrand('+e.id+')">Edit</button>';
+		i = parseInt(i)+1;
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+       	+ '<td>' + i + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'

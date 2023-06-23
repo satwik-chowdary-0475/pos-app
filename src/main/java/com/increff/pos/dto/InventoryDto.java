@@ -11,6 +11,7 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class InventoryDto {
     @Autowired
     private InventoryService inventoryService;
 
+    @Transactional(rollbackOn = ApiException.class)
     public void insert(InventoryForm form) throws ApiException {
         ProductPojo productPojo = productService.select(form.getBarcode());
         InventoryPojo inventoryPojo = HelperDto.convertFormToInventory(form,productPojo.getId());
@@ -28,20 +30,24 @@ public class InventoryDto {
         inventoryService.insert(inventoryPojo);
     }
 
+    @Transactional(rollbackOn = ApiException.class)
     public void update(int id,InventoryForm form) throws ApiException{
         ProductPojo productPojo = productService.select(id);
         InventoryPojo inventoryPojo = HelperDto.convertFormToInventory(form,productPojo.getId());
         HelperDto.validate(inventoryPojo);
         inventoryService.update(inventoryPojo);
     }
+    @Transactional(rollbackOn = ApiException.class)
     public void delete(int id) throws ApiException{
         inventoryService.delete(id);
     }
+    @Transactional(rollbackOn = ApiException.class)
     public InventoryData getProduct(int id) throws ApiException{
         InventoryPojo p = inventoryService.select(id);
         ProductPojo productPojo = productService.select(p.getId());
         return HelperDto.convertFormToInventory(p,productPojo.getBarcode());
     }
+    @Transactional(rollbackOn = ApiException.class)
     public List<InventoryData> getAllProducts() throws ApiException {
         List<InventoryPojo> list = inventoryService.selectAll();
         List<InventoryData> dataList = new ArrayList<InventoryData>();

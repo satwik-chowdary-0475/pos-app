@@ -22,5 +22,5 @@ public class OrderItemPojo extends AbstractPojo{
     @Column(nullable = false)
     private Integer quantity;
     @Column(nullable = false)
-    private Double sellingPrice;
+    private Float sellingPrice;
 }

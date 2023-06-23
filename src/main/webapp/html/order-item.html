@@ -4,18 +4,26 @@
 <body>
 <nav th:replace="snippets.html :: name_site_navbar"></nav>
 <div class="container" id="order-item" th:attr="orderId=${id}">
-    <h3>Order Item Page!!</h3>
+    <div class="d-flex justify-content-between align-items-center py-3" id="order-title">
+        <h3 class="h5 mb-0"></h3>
+    </div>
+    <div  id="order-details">
+        <div>
+        </div>
+    </div>
+    <br>
+
     <div class="row">
         <div class="col-12">
-            <form class="form-inline" id="orderItem-form">
-                <div class="form-group">
+            <form class="form-inline" style="text-align:justify;" id="orderItem-form">
+                <div class="form-group my-3">
                     <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="enter barcode" required>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group my-3">
                     <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="enter quantity" required>
@@ -23,10 +31,16 @@
                 </div>
 
 
+                <div class="form-group my-3">
+                    <label for="inputSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="sellingPrice" id="inputSellingPrice" placeholder="enter selling price" required>
+                    </div>
+                </div>
 
-                <button type="button" class="btn btn-primary" id="add-orderItem">Add Order Item</button>
-                &nbsp
-                <button type="button" class="btn btn-primary" id="print-invoice">Print Invoice!!</button>
+                <button type="button" class="btn btn-success" id="add-orderItem">Add Item</button>
+                &nbsp;
+
             </form>
         </div>
     </div>
@@ -42,9 +56,8 @@
             <table class="table table-striped" id="orderItem-table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Order Id</th>
-                    <th scope="col">Product Id</th>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Selling Price</th>
                     <th scope="col">Actions</th>
@@ -58,38 +71,6 @@
         </div>
     </div>
 
-<!--    <div class="modal" tabindex="-1" role="dialog" id="upload-orderItem-modal">-->
-<!--        <div class="modal-dialog" role="document">-->
-<!--            <div class="modal-content">-->
-
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title">Upload OrderItem Data</h5>-->
-<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                        <span aria-hidden="true">&times;</span>-->
-<!--                    </button>-->
-<!--                </div>-->
-
-<!--                <div class="modal-body">-->
-<!--                    <div class="orderItem-file">-->
-<!--                        <input type="file" class="custom-file-input" id="orderItemFile">-->
-<!--                        <label class="custom-file-label" for="orderItemFile" id="orderItemFileName">Choose file</label>-->
-<!--                    </div>-->
-<!--                    <br>-->
-<!--                    Rows: <span id="rowCount">0</span>,-->
-<!--                    Processed: <span id="processCount">0</span>,-->
-<!--                    Errors: <span id="errorCount">0</span>-->
-<!--                </div>-->
-
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>-->
-<!--                    <button type="button" class="btn btn-primary" id="process-data">Upload</button>-->
-<!--                    <button type="button" class="btn btn-warning" id="download-errors">Download Errors</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--    </div>-->
-
     <div class="modal" tabindex="-1" role="dialog" id="edit-orderItem-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -101,16 +82,24 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-inline" id="orderItem-edit-form">
-                        <div class="form-group">
+                        <div class="form-group my-3">
                             <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="barcode" readonly>
                             </div>
                         </div>
-                        <div class="form-group">
+                        &nbsp;
+                        <div class="form-group my-3">
                             <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="quantity">
+                                <input type="number" class="form-control" name="quantity">
+                            </div>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="inputSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="sellingPrice">
                             </div>
                         </div>
 
@@ -123,6 +112,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="d-flex justify-content-between p-2 mb-2"  id="total-price" style="background-color: #eee;">
+
+    </div>
+
+    <div id="invoice" class="d-flex flex-row-reverse">
+        <button type="button" class="btn btn-success" id="print-invoice">Print Invoice</button>
     </div>
 
 

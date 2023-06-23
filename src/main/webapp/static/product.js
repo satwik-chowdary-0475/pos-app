@@ -15,6 +15,13 @@ function addProduct(event){
            },
     	   success: function(response) {
                 getProductList();
+                $("#product-form input[name=name]").val('');
+                $("#product-form input[name=barcode]").val('');
+                $("#product-form input[name=brand]").val('');
+                $("#product-form input[name=category]").val('');
+                $("#product-form input[name=mrp]").val('');
+                $.notify("Added product successfully","success");
+
        },
     	   error: handleAjaxError
     	});
@@ -58,7 +65,8 @@ function displayEditProduct(id){
 
 function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);
-	$("#product-edit-form input[name=brandCategory]").val(data.brandCategory);
+	$("#product-edit-form input[name=brand]").val(data.brand);
+	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
     $("#product-edit-form input[name=barcode]").val(data.barcode);
     $("#product-edit-form input[name=id]").val(data.id);
@@ -70,15 +78,15 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="displayEditProduct('+e.id+')">edit</button>'
-
+		var buttonHtml = '<button class="btn btn-primary" onclick="displayEditProduct('+e.id+')">edit</button>'
+        i = parseInt(i)+1;
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + i + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>'  + e.name + '</td>'
-		+ '<td>'  + e.brandCategory + '</td>'
+		+ '<td>'  + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
         + '<td>'  + e.mrp + '</td>'
-
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);

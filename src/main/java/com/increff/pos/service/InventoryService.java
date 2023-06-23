@@ -4,6 +4,7 @@ package com.increff.pos.service;
 import com.increff.pos.dao.InventoryDao;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.ProductPojo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,14 +60,4 @@ public class InventoryService {
         p.setQuantity(inventoryPojo.getQuantity());
     }
 
-    @Transactional
-    public void reduceInventory(List<OrderItemPojo> orderItemsList){
-        for(OrderItemPojo p : orderItemsList){
-            int requiredQuantity = p.getQuantity();
-            int productId = p.getProductId();
-            InventoryPojo productInventory = inventoryDao.select(productId);
-            int updatedQuantity = productInventory.getQuantity() - requiredQuantity;
-            productInventory.setQuantity(updatedQuantity);
-        }
-    }
 }
