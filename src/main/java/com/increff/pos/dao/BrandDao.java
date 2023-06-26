@@ -20,8 +20,8 @@ public class BrandDao extends AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public void insert(BrandPojo p){
-        em.persist(p);
+    public void insert(BrandPojo brandPojo){
+        em.persist(brandPojo);
     }
 
     @Transactional

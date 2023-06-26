@@ -12,6 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -24,17 +26,23 @@ public class OrderDao extends AbstractDao{
     private static String DELETE_BY_ID = "delete from OrderPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from OrderPojo p where id=:id";
     private static String SELECT_ALL = "select p from OrderPojo p";
+    private static String SELECT_BY_DATE = "select p from OrderPojo p where DATE(createdAt)=:targetDate and p.status = 'INVOICED' ";
 
     @PersistenceContext
     private EntityManager em;
 
     @Transactional
     public void insert(OrderPojo p){
-
-//        log.error("comment 33 : " + p.getId() + p.getCustomerName() + " " +p.getTime());
         em.persist(p);
     }
 
+    @Transactional
+    public List<OrderPojo> selectByDate(){
+        Query query = em.createQuery(SELECT_BY_DATE);
+        Date today = new Date(System.currentTimeMillis());
+        query.setParameter("targetDate",today);
+        return query.getResultList();
+    }
     @Transactional
     public OrderPojo select(int id){
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ID, OrderPojo.class);

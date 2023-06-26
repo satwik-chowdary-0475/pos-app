@@ -7,6 +7,8 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.util.RoundUtil;
 import com.increff.pos.util.StringUtil;
 
+import java.util.List;
+
 
 public class HelperDto {
     public static void validate(ProductPojo p) throws ApiException {
@@ -176,6 +178,8 @@ public class HelperDto {
         return orderItemData;
     }
 
+
+
     public static void normalise(ProductPojo p){
         p.setName(StringUtil.toLowerCase(p.getName()));
     }
@@ -201,5 +205,6 @@ public class HelperDto {
     public static void roundFloat(ProductPojo p){
         p.setMrp(RoundUtil.round(p.getMrp()));
     }
+
 
 }
