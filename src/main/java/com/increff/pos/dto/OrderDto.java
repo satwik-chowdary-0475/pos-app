@@ -33,7 +33,7 @@ public class OrderDto {
     private OrderItemService orderItemService;
     @Transactional(rollbackOn = ApiException.class)
     public void insert(OrderForm form) throws ApiException {
-        OrderPojo orderPojo = HelperDto.convertFormToOrder(form);
+        OrderPojo orderPojo = HelperDto.convert(form);
         HelperDto.normalise(orderPojo);
         HelperDto.validate(orderPojo);
         orderService.insert(orderPojo);
@@ -44,7 +44,7 @@ public class OrderDto {
         List<OrderData>dataList = new ArrayList<OrderData>();
         List<OrderPojo>list = orderService.selectAll();
         for(OrderPojo p:list){
-            dataList.add(HelperDto.convertFormToOrder(p));
+            dataList.add(HelperDto.convert(p));
         }
         return dataList;
     }
@@ -71,6 +71,6 @@ public class OrderDto {
     @Transactional(rollbackOn = ApiException.class)
     public OrderData getOrder(int id) throws ApiException{
         OrderPojo orderPojo = orderService.select(id);
-        return HelperDto.convertFormToOrder(orderPojo);
+        return HelperDto.convert(orderPojo);
     }
 }

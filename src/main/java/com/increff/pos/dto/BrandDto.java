@@ -20,7 +20,7 @@ public class BrandDto {
 
     @Transactional(rollbackOn = ApiException.class)
     public void insert(BrandForm form) throws ApiException {
-        BrandPojo p = HelperDto.convertFormToBrand(form);
+        BrandPojo p = HelperDto.convert(form);
         HelperDto.normalise(p);
         HelperDto.validate(p);
         brandService.insert(p);
@@ -28,7 +28,7 @@ public class BrandDto {
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(int id,BrandForm form) throws ApiException{
-        BrandPojo p = HelperDto.convertFormToBrand(form);
+        BrandPojo p = HelperDto.convert(form);
         HelperDto.normalise(p);
         HelperDto.validate(p);
         brandService.update(id,p);
@@ -39,14 +39,14 @@ public class BrandDto {
         List<BrandPojo> list = brandService.selectAll();
         List<BrandData> dataList = new ArrayList<BrandData>();
         for(BrandPojo p : list){
-            dataList.add(HelperDto.convertFormToBrand(p));
+            dataList.add(HelperDto.convert(p));
         }
         return dataList;
     }
 
     public BrandData getBrand(int id) throws ApiException{
         BrandPojo p = brandService.select(id);
-        return HelperDto.convertFormToBrand(p);
+        return HelperDto.convert(p);
     }
 
 

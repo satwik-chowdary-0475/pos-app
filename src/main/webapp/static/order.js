@@ -42,9 +42,7 @@ function displayOrderList(data){
     	for(var i in data){
     		var e = data[i];
     		var status = e.status;
-    		var deleteHtml = '<button class="btn btn-danger" onclick="deleteOrder('+e.id+')"';
-    		deleteHtml += (e.status != 'ACTIVE')?' disabled':'';
-    		deleteHtml+=' >Delete</button>';
+    		var deleteHtml = (e.status != 'ACTIVE')?'':'<button class="btn btn-danger" onclick="deleteOrder('+e.id+')">Delete</button>'
     		var status = e.status;
     		var buttonHtml = '<a class="btn btn-info" href="/pos/ui/order/'+e.id+'/order-items">View</a>';
     		buttonHtml += '&nbsp' + '<button class = "btn btn-success" onclick="printInvoice('+e.id;
@@ -73,6 +71,7 @@ function getOrderList(){
 	   error: handleAjaxError
 	});
 }
+
 
 function createOrder(event){
 	var $form = $("#order-form");

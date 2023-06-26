@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
+// ENUM STRING
 @Setter
 @Getter
 @Entity

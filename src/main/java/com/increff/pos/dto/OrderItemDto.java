@@ -29,11 +29,12 @@ public class OrderItemDto {
     @Transactional(rollbackOn = ApiException.class)
     public void insert(int orderId,OrderItemForm form) throws ApiException {
         ProductPojo productPojo = productService.select(form.getBarcode());
-        OrderItemPojo orderItemPojo = HelperDto.convertFormToOrderItem(form,orderId,productPojo);
-        HelperDto.roundFloat(orderItemPojo);
+        OrderItemPojo orderItemPojo = HelperDto.convert(form,orderId,productPojo);
+        HelperDto.normalise(orderItemPojo);
         HelperDto.validate(orderItemPojo);
         InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
         orderItemService.insert(orderItemPojo,inventoryPojo);
+
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -42,7 +43,7 @@ public class OrderItemDto {
         List<OrderItemData>dataList = new ArrayList<OrderItemData>();
         for(OrderItemPojo p: list){
             ProductPojo productPojo = productService.select(p.getProductId());
-            dataList.add(HelperDto.convertFormToOrderItem(p,productPojo.getBarcode(),productPojo.getName()));
+            dataList.add(HelperDto.convert(p,productPojo.getBarcode(),productPojo.getName()));
         }
         return dataList;
     }
@@ -52,14 +53,14 @@ public class OrderItemDto {
     public OrderItemData getOrderItem(int orderId, int id) throws ApiException {
         OrderItemPojo orderItemPojo = orderItemService.select(orderId,id);
         ProductPojo productPojo = productService.select(orderItemPojo.getProductId());
-        return HelperDto.convertFormToOrderItem(orderItemPojo,productPojo.getBarcode(),productPojo.getName());
+        return HelperDto.convert(orderItemPojo,productPojo.getBarcode(),productPojo.getName());
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(int orderId,int id,OrderItemForm form) throws ApiException{
         ProductPojo productPojo = productService.select(form.getBarcode());
-        OrderItemPojo orderItemPojo = HelperDto.convertFormToOrderItem(form,orderId,productPojo);
-        HelperDto.roundFloat(orderItemPojo);
+        OrderItemPojo orderItemPojo = HelperDto.convert(form,orderId,productPojo);
+        HelperDto.normalise(orderItemPojo);
         HelperDto.validate(orderItemPojo);
         InventoryPojo inventoryPojo = inventoryService.select(productPojo.getId());
         orderItemService.update(orderId,id,orderItemPojo,inventoryPojo);

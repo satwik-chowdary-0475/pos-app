@@ -12,7 +12,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class ProductDao extends AbstractDao{
+public class
+ProductDao extends AbstractDao{
 
     private static String SELECT_BY_ID = "select p from ProductPojo p where id=:id";
     private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:barcode";

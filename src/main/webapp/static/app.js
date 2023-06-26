@@ -15,7 +15,8 @@ function toJson($form){
 
 function showError(message){
 
-$.notify(message,"error");
+    $.notify(message,"error");
+
 }
 
 function handleAjaxError(response){

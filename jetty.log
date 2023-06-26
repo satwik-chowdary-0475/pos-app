@@ -12,3 +12,6 @@
 2023-06-26 11:48:49 WARN  DailySalesReportService:40 - DAily service 40 10 1000.0
 2023-06-26 11:49:18 WARN  DailySalesReportService:46 - DAILY SERVICE 42 1000.0 10
 2023-06-26 11:49:44 WARN  DailySalesReportDao:20 - DAILY SALES DAO 20 came here !! 1000.0
+2023-06-26 14:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
+2023-06-26 15:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
+2023-06-26 15:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : null null

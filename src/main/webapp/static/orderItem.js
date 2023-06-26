@@ -75,8 +75,8 @@ function deleteOrderItem(id){
     $.ajax({
     	   url: url,
     	   type: 'DELETE',
-    	   success: function(data) {
-    	   		displayOrderItemList(data);
+    	   success: function() {
+    	   		getOrderItemList();
     	   },
     	   error: handleAjaxError
     	});
@@ -88,12 +88,8 @@ function displayOrderItemList(data){
     	totalPrice = 0;
     	for(var i in data){
     		var e = data[i];
-    		var editHtml = '<button class="btn btn-primary" onclick="displayEditOrderItem('+e.id+')"';
-    		editHtml+=(orderStatus != 'ACTIVE')?' disabled':'';
-    		editHtml+='>edit</button>';
-    		var deleteHtml = '<button class="btn btn-danger" onclick="deleteOrderItem('+e.id+')"';
-    		deleteHtml+=(orderStatus!='ACTIVE')?' disabled':'';
-    		deleteHtml+='>delete</button>';
+    		var editHtml = (orderStatus != 'ACTIVE')?'': '<button class="btn btn-primary" onclick="displayEditOrderItem('+e.id+')">Edit</button>';
+    		var deleteHtml =(orderStatus != 'ACTIVE')?'': '<button class="btn btn-danger" onclick="deleteOrderItem('+e.id+')">Delete</button>';
     		var buttonHtml = editHtml + '&nbsp' + deleteHtml;
     		i = parseFloat(i)+1;
     		var row = '<tr>'
@@ -175,6 +171,9 @@ function printInvoice(){
                 },
                 error: handleAjaxError
             });
+    }
+    else{
+        window.location = document.referrer;
     }
 
 }

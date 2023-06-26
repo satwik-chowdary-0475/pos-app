@@ -26,9 +26,8 @@ public class ProductDto {
     public void insert(ProductForm form) throws ApiException {
         HelperDto.normalise(form);
         BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
-        ProductPojo p = HelperDto.convertFormToProduct(form,brandPojo.getId());
+        ProductPojo p = HelperDto.convert(form,brandPojo.getId());
         HelperDto.normalise(p);
-        HelperDto.roundFloat(p);
         HelperDto.validate(p);
         /* TODO: HANDLE SAME BARCODE CASE
 
@@ -44,9 +43,8 @@ public class ProductDto {
     public void update(int id,ProductForm form) throws ApiException{
         HelperDto.normalise(form);
         BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
-        ProductPojo p = HelperDto.convertFormToProduct(form, brandPojo.getId());
+        ProductPojo p = HelperDto.convert(form, brandPojo.getId());
         HelperDto.normalise(p);
-        HelperDto.roundFloat(p);
         HelperDto.validate(p);
         productService.update(id,p);
     }
@@ -55,7 +53,7 @@ public class ProductDto {
     public ProductData getProduct(int id) throws ApiException{
         ProductPojo productPojo = productService.select(id);
         BrandPojo brandPojo = brandService.select(productPojo.getBrandCategory());
-        return HelperDto.convertFormToProduct(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
+        return HelperDto.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -64,7 +62,7 @@ public class ProductDto {
         List<ProductData> dataList = new ArrayList<ProductData>();
         for(ProductPojo p : list){
             BrandPojo brandPojo = brandService.select(p.getBrandCategory());
-            dataList.add(HelperDto.convertFormToProduct(p,brandPojo.getBrand(), brandPojo.getCategory()));
+            dataList.add(HelperDto.convert(p,brandPojo.getBrand(), brandPojo.getCategory()));
         }
         return dataList;
     }

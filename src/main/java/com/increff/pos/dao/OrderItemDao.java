@@ -53,7 +53,6 @@ public class OrderItemDao extends AbstractDao{
         query.setParameter("targetDate",today);
         query.setParameter("orderId",orderId);
         Object[] result =  query.getSingleResult();
-        log.warn("ORDER ITEM service 56 : " + result[0] + " " + result[1]);
         return result;
     }
     @Transactional
