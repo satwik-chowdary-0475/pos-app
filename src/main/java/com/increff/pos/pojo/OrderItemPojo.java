@@ -15,12 +15,12 @@ public class OrderItemPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
-    @Column(nullable = false)
+    @Column(name = "order_id" , nullable = false)
     private Integer orderId;
-    @Column(nullable = false)
+    @Column(name = "product_id" , nullable = false)
     private Integer productId;
     @Column(nullable = false)
     private Integer quantity;
-    @Column(nullable = false)
-    private Float sellingPrice;
+    @Column(name = "selling_price", nullable = false)
+    private Double sellingPrice;
 }

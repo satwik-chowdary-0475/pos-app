@@ -1,17 +1,4 @@
-2023-06-26 11:37:00 WARN  DailySalesReportService:37 - DAILY SERVICE 37 0.0 0
-2023-06-26 11:37:09 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 11:37:12 WARN  DailySalesReportService:40 - DAily service 40 10 1000.0
-2023-06-26 11:38:00 WARN  DailySalesReportService:37 - DAILY SERVICE 37 0.0 0
-2023-06-26 11:44:19 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 11:44:19 WARN  DailySalesReportService:40 - DAily service 40 10 1000.0
-2023-06-26 11:47:00 WARN  DailySalesReportService:37 - DAILY SERVICE 37 0.0 0
-2023-06-26 11:47:06 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 11:47:20 WARN  DailySalesReportService:40 - DAily service 40 10 1000.0
-2023-06-26 11:48:45 WARN  DailySalesReportService:37 - DAILY SERVICE 37 0.0 0
-2023-06-26 11:48:49 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 11:48:49 WARN  DailySalesReportService:40 - DAily service 40 10 1000.0
-2023-06-26 11:49:18 WARN  DailySalesReportService:46 - DAILY SERVICE 42 1000.0 10
-2023-06-26 11:49:44 WARN  DailySalesReportDao:20 - DAILY SALES DAO 20 came here !! 1000.0
-2023-06-26 14:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 15:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : 10 1000.0
-2023-06-26 15:00:00 WARN  OrderItemDao:56 - ORDER ITEM service 56 : null null
+2023-06-27 10:06:34 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2023-06-27 10:06:34 ERROR SqlExceptionHelper:142 - Unknown column 'status' in 'where clause'
+2023-06-27 10:07:42 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2023-06-27 10:07:42 ERROR SqlExceptionHelper:142 - Unknown column 'status' in 'where clause'

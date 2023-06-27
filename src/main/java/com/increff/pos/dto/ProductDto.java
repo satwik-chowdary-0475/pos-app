@@ -26,27 +26,16 @@ public class ProductDto {
     public void insert(ProductForm form) throws ApiException {
         HelperDto.normalise(form);
         BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
-        ProductPojo p = HelperDto.convert(form,brandPojo.getId());
-        HelperDto.normalise(p);
-        HelperDto.validate(p);
-        /* TODO: HANDLE SAME BARCODE CASE
-
-        ProductPojo productPojo = productService.select(p.getBarcode());
-        if(productPojo.getBarcode()!=null){
-           throw new ApiException("Product with same barcode exist!!");
-        }
-*/
-        productService.insert(p);
+        ProductPojo productPojo = HelperDto.convert(form,brandPojo.getId());
+        productService.insert(productPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(int id,ProductForm form) throws ApiException{
         HelperDto.normalise(form);
         BrandPojo brandPojo = brandService.select(form.getBrand(),form.getCategory());
-        ProductPojo p = HelperDto.convert(form, brandPojo.getId());
-        HelperDto.normalise(p);
-        HelperDto.validate(p);
-        productService.update(id,p);
+        ProductPojo productPojo = HelperDto.convert(form, brandPojo.getId());
+        productService.update(id,productPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -58,13 +47,13 @@ public class ProductDto {
 
     @Transactional(rollbackOn = ApiException.class)
     public List<ProductData> getAllProducts() throws ApiException{
-        List<ProductPojo> list = productService.selectAll();
-        List<ProductData> dataList = new ArrayList<ProductData>();
-        for(ProductPojo p : list){
-            BrandPojo brandPojo = brandService.select(p.getBrandCategory());
-            dataList.add(HelperDto.convert(p,brandPojo.getBrand(), brandPojo.getCategory()));
+        List<ProductPojo> productPojoList = productService.selectAll();
+        List<ProductData> productDataList = new ArrayList<ProductData>();
+        for(ProductPojo productPojo : productPojoList){
+            BrandPojo brandPojo = brandService.select(productPojo.getBrandCategory());
+            productDataList.add(HelperDto.convert(productPojo,brandPojo.getBrand(), brandPojo.getCategory()));
         }
-        return dataList;
+        return productDataList;
     }
 
 

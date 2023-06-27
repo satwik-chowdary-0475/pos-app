@@ -15,13 +15,13 @@ import java.time.ZonedDateTime;
 @Table(
         name = "daily_sales"
 )
-public class DailySalesReportPojo {
+public class DailySalesReportPojo extends AbstractPojo{
     @Id
     private ZonedDateTime time;
-    @Column(nullable = false)
-    private Integer invoiced_orders_count;
-    @Column(nullable = false)
-    private Integer invoiced_items_count;
-    @Column(nullable = false)
-    private Double total_revenue;
+    @Column(name = "invoiced_orders_count", nullable = false)
+    private Integer invoicedOrdersCount;
+    @Column(name = "invoiced_items_count", nullable = false)
+    private Integer invoicedItemsCount;
+    @Column(name = "total_revenue", nullable = false)
+    private Double totalRevenue;
 }

@@ -1,9 +1,9 @@
 package com.increff.pos.util;
 
 public class RoundUtil {
-    public static Float round(Float dbl){
+    public static Double round(Double dbl){
         if(dbl == null) return null;
-        Float roundVal = (float) (Math.round(dbl*100.0)/100.0);
+        Double roundVal = (double) (Math.round(dbl*100.0)/100.0);
         return roundVal;
     }
 //    public static boolean isEmpty(String s) {

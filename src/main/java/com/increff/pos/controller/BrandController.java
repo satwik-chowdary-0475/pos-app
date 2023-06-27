@@ -13,7 +13,7 @@ import java.util.List;
 
 //@Api
 @RestController
-public class BrandApiController {
+public class BrandController {
     @Autowired
     private BrandDto brandDto;
     @ApiOperation(value = "Inserts a brand")

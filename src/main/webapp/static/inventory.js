@@ -49,6 +49,7 @@ function displayEditInventory(id){
 
 function displayInventory(data){
 	$("#inventory-edit-form input[name=id]").val(data.id);
+	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
 	$('#edit-inventory-modal').modal('toggle');
 }
@@ -154,7 +155,7 @@ function uploadRows(){
 }
 
 function updateInventory(event){
-	$('#edit-inventory-modal').modal('toggle');
+
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
@@ -172,6 +173,7 @@ function updateInventory(event){
        },
 	   success: function(response) {
 	   		getInventoryList();
+	   		$('#edit-inventory-modal').modal('toggle');
 	   },
 	   error: handleAjaxError
 	});

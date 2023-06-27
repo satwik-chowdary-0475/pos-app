@@ -14,7 +14,7 @@ import java.util.List;
 
 @Api
 @RestController
-public class ProductApiController {
+public class ProductController {
 
     @Autowired
     private ProductDto productDto;

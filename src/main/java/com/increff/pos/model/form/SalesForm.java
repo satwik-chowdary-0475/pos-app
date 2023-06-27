@@ -3,14 +3,15 @@ package com.increff.pos.model.form;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
+import java.time.ZonedDateTime;
 
-@Setter
 @Getter
-public class ProductForm {
-    private String barcode;
+@Setter
+public class SalesForm {
+
     private String brand;
     private String category;
-    private String name;
-    private Double mrp;
- }
+    private String startTime;
+    private String endTime;
+
+}

@@ -9,6 +9,6 @@ public class OrderItemData{
     private Integer orderId;
     private String productName;
     private Integer quantity;
-    private Float sellingPrice;
+    private Double sellingPrice;
     private String barcode;
 }

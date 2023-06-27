@@ -1,6 +1,5 @@
 package com.increff.pos.dao;
 
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Repository;
@@ -22,13 +21,12 @@ public class OrderItemDao extends AbstractDao{
     private static String DELETE_BY_ID = "delete from OrderItemPojo p where orderId=:orderId and id=:id";
     private static String DELETE_BY_ORDER_ID = "delete from OrderItemPojo p where orderId=:orderId";
     private static String SELECT_BY_DATE = "select SUM(p.quantity), SUM(p.quantity*p.sellingPrice) from OrderItemPojo p where  FUNCTION('DATE', p.createdAt)=:targetDate and orderId=:orderId";
-
     @PersistenceContext
     private EntityManager em;
 
     @Transactional
-    public void insert(OrderItemPojo p){
-        em.persist(p);
+    public void insert(OrderItemPojo orderItemPojo){
+        em.persist(orderItemPojo);
     }
 
     @Transactional
@@ -61,6 +59,7 @@ public class OrderItemDao extends AbstractDao{
         query.setParameter("orderId",orderId);
         return query.getResultList();
     }
+
 
     @Transactional
     public int delete(int orderId,int id){

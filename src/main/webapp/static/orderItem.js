@@ -88,10 +88,10 @@ function displayOrderItemList(data){
     	totalPrice = 0;
     	for(var i in data){
     		var e = data[i];
-    		var editHtml = (orderStatus != 'ACTIVE')?'': '<button class="btn btn-primary" onclick="displayEditOrderItem('+e.id+')">Edit</button>';
-    		var deleteHtml =(orderStatus != 'ACTIVE')?'': '<button class="btn btn-danger" onclick="deleteOrderItem('+e.id+')">Delete</button>';
+    		var editHtml = (e!=null && e.status != 'ACTIVE')?'': '<button class="btn btn-primary" onclick="displayEditOrderItem('+e.id+')">Edit</button>';
+    		var deleteHtml =(e!=null && e.status != 'ACTIVE')?'': '<button class="btn btn-danger" onclick="deleteOrderItem('+e.id+')">Delete</button>';
     		var buttonHtml = editHtml + '&nbsp' + deleteHtml;
-    		i = parseFloat(i)+1;
+    		i = parseInt(i)+1;
     		var row = '<tr>'
     		+ '<td>' + i + '</td>'
     		+ '<td>' + e.productName + '</td>'
@@ -136,12 +136,9 @@ function addOrderItem(event){
 }
 
 function updateOrderItem(event){
-	$('#edit-orderItem-modal').modal('toggle');
-	//Get the ID
 	var id = $("#orderItem-edit-form input[name=id]").val();
 	var url = getOrderItemUrl() + "/" + id;
 
-	//Set the values to update
 	var $form = $("#orderItem-edit-form");
 	var json = toJson($form);
 	$.ajax({
@@ -153,6 +150,7 @@ function updateOrderItem(event){
        },
 	   success: function(response) {
 	   		getOrderItemList();
+	   		$('#edit-orderItem-modal').modal('toggle');
 	   },
 	   error: handleAjaxError
 	});
@@ -195,8 +193,7 @@ function init(){
     $("#update-orderItem").click(updateOrderItem);
     $("#print-invoice").click(printInvoice);
 }
-
+$(document).ready(init);
 $(document).ready(getOrderId());
 $(document).ready(getOrderDetails());
-$(document).ready(init);
 $(document).ready(getOrderItemList());

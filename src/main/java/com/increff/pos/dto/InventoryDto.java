@@ -33,18 +33,18 @@ public class InventoryDto {
     private BrandService brandService;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void insert(InventoryForm form) throws ApiException {
-        ProductPojo productPojo = productService.select(form.getBarcode());
-        InventoryPojo inventoryPojo = HelperDto.convert(form, productPojo.getId());
-        HelperDto.validate(inventoryPojo,false);
+    public void insert(InventoryForm inventoryForm) throws ApiException {
+        ProductPojo productPojo = productService.select(inventoryForm.getBarcode());
+        HelperDto.validate(inventoryForm);
+        InventoryPojo inventoryPojo = HelperDto.convert(inventoryForm, productPojo.getId());
         inventoryService.insert(inventoryPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id, InventoryForm form) throws ApiException {
+    public void update(int id, InventoryForm inventoryForm) throws ApiException {
         ProductPojo productPojo = productService.select(id);
-        InventoryPojo inventoryPojo = HelperDto.convert(form, productPojo.getId());
-        HelperDto.validate(inventoryPojo,true);
+        HelperDto.validate(inventoryForm);
+        InventoryPojo inventoryPojo = HelperDto.convert(inventoryForm, productPojo.getId());
         inventoryService.update(inventoryPojo);
     }
 
@@ -55,38 +55,21 @@ public class InventoryDto {
 
     @Transactional(rollbackOn = ApiException.class)
     public InventoryData getProduct(int id) throws ApiException {
-        InventoryPojo p = inventoryService.select(id);
-        ProductPojo productPojo = productService.select(p.getId());
-        return HelperDto.convert(p, productPojo.getBarcode(),productPojo.getName());
+        InventoryPojo inventoryPojo = inventoryService.select(id);
+        ProductPojo productPojo = productService.select(inventoryPojo.getId());
+        return HelperDto.convert(inventoryPojo, productPojo.getBarcode(),productPojo.getName());
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List<InventoryData> getAllProducts() throws ApiException {
-        List<InventoryPojo> list = inventoryService.selectAll();
-        List<InventoryData> dataList = new ArrayList<InventoryData>();
-        for (InventoryPojo p : list) {
-            ProductPojo productPojo = productService.select(p.getId());
-            dataList.add(HelperDto.convert(p, productPojo.getBarcode(),productPojo.getName()));
-        }
-        return dataList;
-    }
-
-    @Transactional(rollbackOn = ApiException.class)
-    public List<InventoryReportData> getReport() throws ApiException {
         List<InventoryPojo> inventoryPojoList = inventoryService.selectAll();
-        Map<Pair<String, String>, Integer> brandCategoryMap = new HashMap<Pair<String, String>, Integer>();
+        List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
         for (InventoryPojo inventoryPojo : inventoryPojoList) {
             ProductPojo productPojo = productService.select(inventoryPojo.getId());
-            BrandPojo brandPojo = brandService.select(productPojo.getBrandCategory());
-            Pair<String, String> brandCategoryPair = new Pair<>(brandPojo.getBrand(), brandPojo.getCategory());
-            if (brandCategoryMap.containsKey(brandCategoryPair)) {
-                int previousQuantity = Integer.valueOf(brandCategoryMap.get(brandCategoryPair));
-                previousQuantity = previousQuantity + inventoryPojo.getQuantity();
-                brandCategoryMap.put(brandCategoryPair, previousQuantity);
-            } else {
-                brandCategoryMap.put(brandCategoryPair, inventoryPojo.getQuantity());
-            }
+            inventoryDataList.add(HelperDto.convert(inventoryPojo, productPojo.getBarcode(),productPojo.getName()));
         }
-        return ReportHelperDto.convertPojoToData(brandCategoryMap);
+        return inventoryDataList;
     }
+
+
 }

@@ -99,7 +99,15 @@
         <div class="modal-body">
           <form class="form-inline" id="inventory-edit-form">
             <div class="form-group my-3">
+              <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="barcode" placeholder="Enter Barcode" readonly>
+              </div>
+            </div>
+            <div class="form-group my-3">
               <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+
               <div class="col-sm-10">
                 <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" min="0">
               </div>

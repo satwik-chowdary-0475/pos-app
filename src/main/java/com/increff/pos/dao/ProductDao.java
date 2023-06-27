@@ -18,12 +18,13 @@ ProductDao extends AbstractDao{
     private static String SELECT_BY_ID = "select p from ProductPojo p where id=:id";
     private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:barcode";
     private static String SELECT_ALL = "select p from ProductPojo p";
+    private static String SELECT_BY_BRAND = "select p from ProductPojo p where brandCategory=:brandCategory";
     @PersistenceContext
     private EntityManager em;
 
     @Transactional
-    public void insert(ProductPojo p){
-        em.persist(p);
+    public void insert(ProductPojo productPojo){
+        em.persist(productPojo);
     }
 
     @Transactional
@@ -31,6 +32,13 @@ ProductDao extends AbstractDao{
         TypedQuery<ProductPojo> query = getQuery(SELECT_BY_ID, ProductPojo.class);
         query.setParameter("id", id);
         return getSingle(query);
+    }
+
+    @Transactional
+    public List<ProductPojo> selectByBrandId(int brandCategory){
+        TypedQuery<ProductPojo> query = getQuery(SELECT_BY_BRAND, ProductPojo.class);
+        query.setParameter("brandCategory", brandCategory);
+        return query.getResultList();
     }
 
     @Transactional

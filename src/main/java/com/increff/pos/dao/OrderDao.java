@@ -4,6 +4,7 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderPojo;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
+import org.apache.xpath.operations.Or;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -26,21 +28,20 @@ public class OrderDao extends AbstractDao{
     private static String DELETE_BY_ID = "delete from OrderPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from OrderPojo p where id=:id";
     private static String SELECT_ALL = "select p from OrderPojo p";
-    private static String SELECT_BY_DATE = "select p from OrderPojo p where DATE(createdAt)=:targetDate and p.status = 'INVOICED' ";
-
+    private static String SELECT_BY_DATE = "select p from OrderPojo p where p.status = 'INVOICED' and (FUNCTION('DATE',p.createdAt) BETWEEN :startTime and :endTime ) ";
     @PersistenceContext
     private EntityManager em;
 
     @Transactional
-    public void insert(OrderPojo p){
-        em.persist(p);
+    public void insert(OrderPojo orderPojo){
+        em.persist(orderPojo);
     }
 
     @Transactional
-    public List<OrderPojo> selectByDate(){
+    public List<OrderPojo> selectByDate(Date startTime,Date endTime){
         Query query = em.createQuery(SELECT_BY_DATE);
-        Date today = new Date(System.currentTimeMillis());
-        query.setParameter("targetDate",today);
+        query.setParameter("startTime",startTime);
+        query.setParameter("endTime",endTime);
         return query.getResultList();
     }
     @Transactional
@@ -55,6 +56,7 @@ public class OrderDao extends AbstractDao{
         TypedQuery<OrderPojo> query = getQuery(SELECT_ALL, OrderPojo.class);
         return query.getResultList();
     }
+
 
     @Transactional
     public int delete(int id){

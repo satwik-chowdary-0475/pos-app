@@ -3,22 +3,26 @@ function getBrandUrl(){
     return baseUrl + "/api/report";
 }
 
-function displayBrandDetails(data){
-
-    var $tbody = $('#brand-table').find('tbody');
-    	$tbody.empty();
-    	for(var i in data){
-    		var e = data[i];
-            i = parseInt(i)+1;
-    		var row = '<tr>'
-    		+ '<td>' + i + '</td>'
-    		+ '<td>'  + e.brand + '</td>'
-    		+ '<td>'  + e.category + '</td>'
-    		+ '</tr>';
-            $tbody.append(row);
-    	}
-
+function downloadReports(reportData){
+	writeFileData(reportData);
 }
+
+//function displayBrandDetails(data){
+//
+//    var $tbody = $('#brand-table').find('tbody');
+//    	$tbody.empty();
+//    	for(var i in data){
+//    		var e = data[i];
+//            i = parseInt(i)+1;
+//    		var row = '<tr>'
+//    		+ '<td>' + i + '</td>'
+//    		+ '<td>'  + e.brand + '</td>'
+//    		+ '<td>'  + e.category + '</td>'
+//    		+ '</tr>';
+//            $tbody.append(row);
+//    	}
+//
+//}
 
 function getBrandReports(){
 
@@ -27,7 +31,7 @@ function getBrandReports(){
     	   url: url,
     	   type: 'GET',
     	   success: function(data) {
-    	   		displayBrandDetails(data);
+    	   		downloadReports(data);
     	   },
     	   error: handleAjaxError
     	});
@@ -35,4 +39,8 @@ function getBrandReports(){
 
 }
 
-$(document).ready(getBrandReports);
+function init(){
+    $("#download-report").click(getBrandReports)
+}
+
+$(document).ready(init);

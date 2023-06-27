@@ -19,34 +19,33 @@ public class BrandDto {
     private BrandService brandService;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void insert(BrandForm form) throws ApiException {
-        BrandPojo p = HelperDto.convert(form);
-        HelperDto.normalise(p);
-        HelperDto.validate(p);
-        brandService.insert(p);
+    public void insert(BrandForm brandForm) throws ApiException {
+        HelperDto.normalise(brandForm);
+        BrandPojo brandPojo = HelperDto.convert(brandForm);
+        brandService.insert(brandPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id,BrandForm form) throws ApiException{
-        BrandPojo p = HelperDto.convert(form);
-        HelperDto.normalise(p);
-        HelperDto.validate(p);
-        brandService.update(id,p);
+    public void update(int id,BrandForm brandForm) throws ApiException{
+        HelperDto.normalise(brandForm);
+        BrandPojo brandPojo = HelperDto.convert(brandForm);
+        brandService.update(id,brandPojo);
     }
 
     @Transactional
     public List<BrandData> getAllBrand(){
-        List<BrandPojo> list = brandService.selectAll();
-        List<BrandData> dataList = new ArrayList<BrandData>();
-        for(BrandPojo p : list){
-            dataList.add(HelperDto.convert(p));
+        List<BrandPojo> brandPojoList = brandService.selectAll();
+        List<BrandData> brandDataList = new ArrayList<BrandData>();
+        for(BrandPojo brandPojo : brandPojoList){
+            brandDataList.add(HelperDto.convert(brandPojo));
         }
-        return dataList;
+        return brandDataList;
     }
 
+    @Transactional
     public BrandData getBrand(int id) throws ApiException{
-        BrandPojo p = brandService.select(id);
-        return HelperDto.convert(p);
+        BrandPojo brandPojo = brandService.select(id);
+        return HelperDto.convert(brandPojo);
     }
 
 

@@ -32,32 +32,32 @@ public class OrderDto {
     @Autowired
     private OrderItemService orderItemService;
     @Transactional(rollbackOn = ApiException.class)
-    public void insert(OrderForm form) throws ApiException {
-        OrderPojo orderPojo = HelperDto.convert(form);
-        HelperDto.normalise(orderPojo);
-        HelperDto.validate(orderPojo);
+    public void insert(OrderForm orderForm) throws ApiException {
+        HelperDto.normalise(orderForm);
+        OrderPojo orderPojo = HelperDto.convert(orderForm);
         orderService.insert(orderPojo);
     }
 
     @Transactional
     public List<OrderData>getAllOrders(){
-        List<OrderData>dataList = new ArrayList<OrderData>();
-        List<OrderPojo>list = orderService.selectAll();
-        for(OrderPojo p:list){
-            dataList.add(HelperDto.convert(p));
+        List<OrderData>orderDataList = new ArrayList<OrderData>();
+        List<OrderPojo>orderPojoList = orderService.selectAll();
+        for(OrderPojo orderPojo:orderPojoList){
+            orderDataList.add(HelperDto.convert(orderPojo));
         }
-        return dataList;
+        return orderDataList;
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void delete(int id) throws ApiException{
         orderService.delete(id);
-        Map<InventoryPojo,Integer> inventoryPojoDict= new Hashtable<>();
         List<OrderItemPojo>orderItemPojoList = orderItemService.selectAll(id);
         for(OrderItemPojo orderItemPojo : orderItemPojoList){
-            inventoryPojoDict.put(inventoryService.select(orderItemPojo.getProductId()),orderItemPojo.getQuantity());
+            InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
+            int updatedQuantity = inventoryPojo.getQuantity() + orderItemPojo.getQuantity();
+            inventoryService.update(inventoryPojo,updatedQuantity);
         }
-        orderItemService.deleteByOrder(id,inventoryPojoDict);
+        orderItemService.deleteByOrder(id);
     }
 
     @Transactional(rollbackOn = ApiException.class)

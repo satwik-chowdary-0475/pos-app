@@ -17,21 +17,20 @@ public class InventoryService {
     @Autowired
     private InventoryDao inventoryDao;
 
-    static Logger logger = Logger.getLogger(InventoryService.class);
     @Transactional(rollbackOn = ApiException.class)
     public void insert(InventoryPojo inventoryPojo) throws ApiException {
         int id = inventoryPojo.getId();
         int quantity = inventoryPojo.getQuantity();
-        InventoryPojo productExists = inventoryDao.select(id);
-        if(productExists == null){
-            InventoryPojo p = new InventoryPojo();
-            p.setId(id);
-            p.setQuantity(quantity);
-            inventoryDao.insert(p);
+        InventoryPojo existingInventoryPojo = inventoryDao.select(id);
+        if(existingInventoryPojo == null){
+            InventoryPojo newInventoryPojo = new InventoryPojo();
+            newInventoryPojo.setId(id);
+            newInventoryPojo.setQuantity(quantity);
+            inventoryDao.insert(newInventoryPojo);
         }
         else{
-            int newQuantity = quantity + productExists.getQuantity();
-            productExists.setQuantity(newQuantity);
+            int newQuantity = quantity + existingInventoryPojo.getQuantity();
+            existingInventoryPojo.setQuantity(newQuantity);
         }
     }
 
@@ -42,11 +41,11 @@ public class InventoryService {
 
     @Transactional(rollbackOn = ApiException.class)
     public InventoryPojo select(int id) throws ApiException {
-        InventoryPojo p = inventoryDao.select(id);
-        if(p == null){
+        InventoryPojo inventoryPojo = inventoryDao.select(id);
+        if(inventoryPojo == null){
             throw new ApiException("Product with id not present in inventory!!");
         }
-        return p;
+        return inventoryPojo;
     }
 
     @Transactional
@@ -55,9 +54,14 @@ public class InventoryService {
     }
 
     @Transactional
-    public void update(InventoryPojo inventoryPojo){
-        InventoryPojo p = inventoryDao.select(inventoryPojo.getId());
-        p.setQuantity(inventoryPojo.getQuantity());
+    public void update(InventoryPojo updatedInventoryPojo){
+        InventoryPojo existingInventoryPojo = inventoryDao.select(updatedInventoryPojo.getId());
+        existingInventoryPojo.setQuantity(updatedInventoryPojo.getQuantity());
+    }
+
+    @Transactional
+    public void update(InventoryPojo inventoryPojo,int quantity){
+        inventoryPojo.setQuantity(quantity);
     }
 
 }

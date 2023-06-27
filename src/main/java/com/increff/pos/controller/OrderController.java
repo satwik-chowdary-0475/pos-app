@@ -16,7 +16,7 @@ import java.util.List;
 
 @Api
 @RestController
-public class OrderApiController {
+public class OrderController {
 
     @Autowired
     private OrderDto orderDto;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -27,17 +28,17 @@ public class OrderItemService {
     public void insert(OrderItemPojo orderItemPojo,InventoryPojo inventoryPojo) throws ApiException {
         int requiredQuantity = orderItemPojo.getQuantity();
         int inventoryQuantity = inventoryPojo.getQuantity();
-        OrderItemPojo orderExists = orderItemDao.selectByProduct(orderItemPojo.getOrderId(),orderItemPojo.getProductId());
+        OrderItemPojo existingOrderPojo = orderItemDao.selectByProduct(orderItemPojo.getOrderId(),orderItemPojo.getProductId());
         if(requiredQuantity>inventoryQuantity) {
             throw new ApiException("Insufficient inventory for the product!!!");
         }
-        if(orderExists != null){
-            orderExists.setQuantity(requiredQuantity+orderExists.getQuantity());
+        if(existingOrderPojo != null){
+            existingOrderPojo.setSellingPrice(orderItemPojo.getSellingPrice());
+            existingOrderPojo.setQuantity(requiredQuantity+existingOrderPojo.getQuantity());
         }
         else{
             orderItemDao.insert(orderItemPojo);
         }
-        inventoryPojo.setQuantity(inventoryQuantity-requiredQuantity);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -49,45 +50,46 @@ public class OrderItemService {
         return orderItemPojo;
     }
 
+    @Transactional(rollbackOn = ApiException.class)
+    public OrderItemPojo selectByProduct(int orderId,int productId){
+        OrderItemPojo orderItemPojo = orderItemDao.selectByProduct(orderId,productId);
+        return orderItemPojo;
+    }
+
     @Transactional
     public List<OrderItemPojo> selectAll(int orderId){
         return orderItemDao.selectAll(orderId);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int orderId,int id,OrderItemPojo p,InventoryPojo inventoryPojo) throws ApiException{
-        OrderItemPojo orderItemPojo = orderItemDao.select(orderId,id);
-        if(orderItemPojo == null){
+    public void update(int orderId,int id,OrderItemPojo updatedOrderItemPojo,InventoryPojo inventoryPojo) throws ApiException{
+        OrderItemPojo existingOrderItemPojo = orderItemDao.select(orderId,id);
+        if(existingOrderItemPojo == null){
             throw new ApiException("Cannot update as order item doesn't exist!!");
         }
-        int requiredQuantity = p.getQuantity();
-        int inventoryQuantity = inventoryPojo.getQuantity();
+        int requiredQuantity = updatedOrderItemPojo.getQuantity();
+        int inventoryQuantity = inventoryPojo.getQuantity() + existingOrderItemPojo.getQuantity();
         if(requiredQuantity > inventoryQuantity){
             throw new ApiException("Insufficient inventory for the product!!!");
         }
-        orderItemPojo.setQuantity(requiredQuantity);
-        orderItemPojo.setSellingPrice(p.getSellingPrice());
-        inventoryPojo.setQuantity(inventoryQuantity-requiredQuantity);
+        existingOrderItemPojo.setQuantity(requiredQuantity);
+        existingOrderItemPojo.setSellingPrice(updatedOrderItemPojo.getSellingPrice());
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void delete (int orderId,int id,InventoryPojo inventoryPojo) throws ApiException{
+    public void delete (int orderId,int id) throws ApiException{
         OrderItemPojo orderItemPojo = orderItemDao.select(orderId,id);
         if(orderItemPojo == null){
             throw new ApiException("Order item doesn't exist!!");
         }
-        inventoryPojo.setQuantity(inventoryPojo.getQuantity() + orderItemPojo.getQuantity());
+
         orderItemDao.delete(orderId,id);
     }
 
     @Transactional
-    public void deleteByOrder(int orderId,Map<InventoryPojo,Integer>inventoryPojoDict){
-        for(Map.Entry<InventoryPojo,Integer> entry : inventoryPojoDict.entrySet()){
-            InventoryPojo inventoryPojo = entry.getKey();
-            int updatedQuantity = inventoryPojo.getQuantity() + entry.getValue();
-            inventoryPojo.setQuantity(updatedQuantity);
-        }
+    public void deleteByOrder(int orderId){
         orderItemDao.delete(orderId);
     }
+
 
 }

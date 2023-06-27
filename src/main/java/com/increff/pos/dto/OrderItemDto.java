@@ -27,25 +27,26 @@ public class OrderItemDto {
     @Autowired
     private InventoryService inventoryService;
     @Transactional(rollbackOn = ApiException.class)
-    public void insert(int orderId,OrderItemForm form) throws ApiException {
-        ProductPojo productPojo = productService.select(form.getBarcode());
-        OrderItemPojo orderItemPojo = HelperDto.convert(form,orderId,productPojo);
-        HelperDto.normalise(orderItemPojo);
-        HelperDto.validate(orderItemPojo);
+    public void insert(int orderId,OrderItemForm orderItemForm) throws ApiException {
+        ProductPojo productPojo = productService.select(orderItemForm.getBarcode());
+        HelperDto.normalise(orderItemForm);
+        OrderItemPojo orderItemPojo = HelperDto.convert(orderItemForm,orderId,productPojo);
         InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
         orderItemService.insert(orderItemPojo,inventoryPojo);
-
+        int requiredQuantity = orderItemPojo.getQuantity();
+        int inventoryQuantity = inventoryPojo.getQuantity();
+        inventoryService.update(inventoryPojo,inventoryQuantity-requiredQuantity);
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List<OrderItemData> getOrderItems(int orderId) throws ApiException {
-        List<OrderItemPojo> list = orderItemService.selectAll(orderId);
-        List<OrderItemData>dataList = new ArrayList<OrderItemData>();
-        for(OrderItemPojo p: list){
-            ProductPojo productPojo = productService.select(p.getProductId());
-            dataList.add(HelperDto.convert(p,productPojo.getBarcode(),productPojo.getName()));
+        List<OrderItemPojo> orderItemPojoList = orderItemService.selectAll(orderId);
+        List<OrderItemData>orderItemDataList = new ArrayList<OrderItemData>();
+        for(OrderItemPojo orderItemPojo: orderItemPojoList){
+            ProductPojo productPojo = productService.select(orderItemPojo.getProductId());
+            orderItemDataList.add(HelperDto.convert(orderItemPojo,productPojo.getBarcode(),productPojo.getName()));
         }
-        return dataList;
+        return orderItemDataList;
     }
 
 
@@ -57,20 +58,26 @@ public class OrderItemDto {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int orderId,int id,OrderItemForm form) throws ApiException{
-        ProductPojo productPojo = productService.select(form.getBarcode());
-        OrderItemPojo orderItemPojo = HelperDto.convert(form,orderId,productPojo);
-        HelperDto.normalise(orderItemPojo);
-        HelperDto.validate(orderItemPojo);
+    public void update(int orderId,int id,OrderItemForm orderItemForm) throws ApiException{
+        ProductPojo productPojo = productService.select(orderItemForm.getBarcode());
+        HelperDto.normalise(orderItemForm);
+        OrderItemPojo orderItemPojo = HelperDto.convert(orderItemForm,orderId,productPojo);
         InventoryPojo inventoryPojo = inventoryService.select(productPojo.getId());
+        OrderItemPojo existingOrderItemPojo = orderItemService.select(orderId,id);
+        int requiredQuantity = orderItemPojo.getQuantity();
+        int inventoryQuantity = inventoryPojo.getQuantity();
+        int previousQuantity = existingOrderItemPojo.getQuantity();
         orderItemService.update(orderId,id,orderItemPojo,inventoryPojo);
+        int updatedQuantity = inventoryQuantity + previousQuantity - requiredQuantity;
+        inventoryService.update(inventoryPojo, updatedQuantity);
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void delete(int orderId,int id) throws ApiException{
         OrderItemPojo orderItemPojo = orderItemService.select(orderId,id);
         InventoryPojo inventoryPojo = inventoryService.select(orderItemPojo.getProductId());
-        orderItemService.delete(orderId,id,inventoryPojo);
+        orderItemService.delete(orderId,id);
+        inventoryService.update(inventoryPojo,inventoryPojo.getQuantity() + orderItemPojo.getQuantity());
     }
 
 }
