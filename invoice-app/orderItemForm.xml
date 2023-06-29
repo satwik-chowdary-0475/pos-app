@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Order>
+    <Title>Increff Point of Sale</Title>
+    <Heading>
+        <Logo src="/Users/satwikchowdary/Desktop/pos-app/invoice-app/src/main/resources"/>
+        <Address>Address</Address>
+        <CustomerName>string</CustomerName>
+        <InvoicedTime>2023/06/29</InvoicedTime>
+        <OrderId>0</OrderId>
+    </Heading>
+    <OrderItem>
+        <Barcode>string</Barcode>
+        <ProductName>string</ProductName>
+        <Quantity>0</Quantity>
+        <SellingPrice>0.0</SellingPrice>
+        <TotalPrice>0.0</TotalPrice>
+    </OrderItem>
+    <TotalOrderPrice>0.0</TotalOrderPrice>
+</Order>
